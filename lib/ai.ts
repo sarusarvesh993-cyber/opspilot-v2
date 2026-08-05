@@ -2,7 +2,6 @@
 
 const apiKey = process.env.OPENAI_API_KEY || "mock-key";
 
-// Auto-detect if key is from OpenRouter / Third-Party and set the correct Base URL
 const isThirdParty = apiKey.startsWith("sk-or-");
 const baseURL = isThirdParty ? "https://openrouter.ai/api/v1" : undefined;
 
@@ -21,9 +20,8 @@ export interface Message {
   timestamp?: string;
 }
 
-export async function generateChatResponse(messages: Message[]) {
+export async function generateChatResponse(messages: Message[]): Promise<string> {
   try {
-    // If using OpenRouter, map "gpt-4o-mini" automatically to "openai/gpt-4o-mini"
     let modelName = process.env.OPENAI_MODEL || "gpt-4o-mini";
     if (isThirdParty && modelName === "gpt-4o-mini") {
       modelName = "openai/gpt-4o-mini";
@@ -35,13 +33,13 @@ export async function generateChatResponse(messages: Message[]) {
       temperature: 0.2,
     });
     return response.choices[0]?.message?.content || "No response generated.";
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("AI Generation Error:", error);
-    return "AI Service Error: " + error.message;
+    return "AI Service Error: " + errorMessage;
   }
 }
 
-// Function to demonstrate the workflow execution. Real execution of automated scripts
 export async function executeAutomatedWorkflow(taskName: string): Promise<string> {
   console.log("Executing live automated DevSecOps task: " + taskName);
   return "Successfully completed execution of DevOps run path for: " + taskName;

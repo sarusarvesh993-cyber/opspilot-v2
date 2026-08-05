@@ -2,7 +2,6 @@
 
 const apiKey = process.env.OPENAI_API_KEY || "mock-key";
 
-// Auto-detect if key is from OpenRouter / Third-Party and set the correct Base URL
 const isThirdParty = apiKey.startsWith("sk-or-");
 const baseURL = isThirdParty ? "https://openrouter.ai/api/v1" : undefined;
 
@@ -35,8 +34,9 @@ export async function analyzeImage(imageBuffer: Buffer): Promise<string> {
       ]
     });
     return response.choices[0]?.message?.content || "No description generated.";
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Image Analysis Error:", error);
-    return "Failed to analyze image: " + error.message;
+    return "Failed to analyze image: " + errorMessage;
   }
 }
