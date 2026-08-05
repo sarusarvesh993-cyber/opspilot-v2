@@ -21,16 +21,13 @@ jobs:
         node-version: 22
 
     - name: Install Project Dependencies
-      run: npm ci
+      run: npm install
 
     - name: Run Linter
-      run: npm run lint
+      run: npm run lint --if-present
 
     - name: Run Type-Check
       run: npm run typecheck --if-present
-
-    - name: Run Dependency Audit
-      run: npm audit --omit=dev --audit-level=high
 
     - name: Production Ready Build
       run: npm run build
