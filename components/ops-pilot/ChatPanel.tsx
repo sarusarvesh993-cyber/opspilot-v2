@@ -37,12 +37,12 @@ export default function ChatPanel() {
   const [liveNetworkIn, setLiveNetworkIn] = useState(1.3);
   const [liveNetworkOut, setLiveNetworkOut] = useState(2.7);
 
-  // Metrics Tab State
-  const [metrics, setMetrics] = useState<ServerMetric[]>([
-    { name: "Global CPU Utilization", value: 42, status: "nominal", trend: "stable" },
-    { name: "Kubernetes Node Pool Memory", value: 78, status: "warning", trend: "up" },
-    { name: "API Gateway Latency (ms)", value: 120, status: "nominal", trend: "down" },
-    { name: "Database Pool Connection Pool", value: 92, status: "critical", trend: "up" },
+  // Metrics Tab State (Cleaned to avoid setMetrics warnings)
+  const [metrics] = useState<ServerMetric[]>([
+    { name: "Simulated CPU Utilization", value: 42, status: "nominal", trend: "stable" },
+    { name: "Simulated Node Memory Allocation", value: 68, status: "warning", trend: "up" },
+    { name: "Simulated API Latency (ms)", value: 120, status: "nominal", trend: "down" },
+    { name: "Simulated Database Pool Size", value: 92, status: "critical", trend: "up" },
   ]);
 
   // Security Audit state
@@ -71,7 +71,7 @@ export default function ChatPanel() {
       setMessages([
         {
           role: "assistant",
-          content: "Hello Astra Admin! I am OpsPilot v2. I have successfully established a direct connection to your cloud infrastructure. Ask me to scan active clusters, write configurations, or display real-time telemetry metrics.",
+          content: "Hello Astra Admin! I am OpsPilot v2. This is a simulated operations demonstration. Please ask me to generate sample cloud configurations or explain how to configure infrastructure tasks.",
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         }
       ]);
@@ -187,7 +187,7 @@ export default function ChatPanel() {
 
   return (
     <div className="flex h-screen w-full bg-[#030712] text-slate-100 font-sans overflow-hidden">
-      {/* Left Navigation Sidebar */}
+      {/* 1. LEFT SIDEBAR */}
       <aside className="w-64 h-full bg-[#050b18] border-r border-[#1a2e4a] flex flex-col justify-between p-5 flex-shrink-0">
         <div>
           {/* Logo & Branding */}
@@ -280,7 +280,7 @@ export default function ChatPanel() {
         <header className="px-6 py-4 border-b border-[#1a2e4a] bg-[#050b18]/60 backdrop-blur-md flex items-center justify-between flex-shrink-0">
           <div>
             <h1 className="text-base font-bold text-white">👋 Welcome back, Astra Admin</h1>
-            <p className="text-xs text-slate-400">How can OpsPilot assist you today?</p>
+            <p className="text-xs text-slate-400">This is a simulated operations demonstration.</p>
           </div>
           <div className="w-8 h-8 rounded-lg border border-[#1a2e4a] flex items-center justify-center bg-[#081222]">
             <span className="text-sm">🌐</span>
@@ -319,7 +319,7 @@ export default function ChatPanel() {
                         {msg.role === "assistant" && msg.isOperationsStatus && msg.operationsData && (
                           <div className="mt-4 border-t border-[#1a2e4a] pt-4">
                             <p className="text-xs font-mono uppercase text-cyan-400 mb-2.5 tracking-wider font-bold">
-                              🟢 Captured Live Telemetry Diagnostics:
+                              🟢 Captured Simulated Telemetry Diagnostics:
                             </p>
                             <div className="grid grid-cols-5 gap-2.5">
                               <div className="bg-[#050b18] border border-[#1a2e4a] p-2.5 rounded-lg">
@@ -359,7 +359,7 @@ export default function ChatPanel() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  placeholder="Ask OpsPilot (e.g., 'What is our current CPU status?')..."
+                  placeholder="Ask OpsPilot (e.g., 'What is our simulated CPU status?')..."
                   className="flex-1 bg-[#02050c] border border-[#1a2e4a] rounded-xl px-5 py-3.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-500/50"
                 />
                 <button
@@ -391,7 +391,7 @@ export default function ChatPanel() {
                   <div className="text-4xl font-extrabold text-white font-mono">
                     {metric.name.includes("CPU") ? liveCPU : (metric.name.includes("Memory") ? liveMemory : metric.value)}%
                   </div>
-                  <p className="text-xs text-slate-500 mt-4">Active telemetry node calculation metrics.</p>
+                  <p className="text-xs text-slate-500 mt-4">Simulated telemetry node calculation metrics.</p>
                 </div>
               ))}
             </div>
@@ -408,10 +408,10 @@ export default function ChatPanel() {
                 ))}
               </div>
               <button 
-                onClick={() => setSecurityLogs((prev) => [...prev, "[SEC-AUDIT-" + (100 + prev.length) + "] Port scanning initiated... [CLEAN] 0 vulnerabilities found."])}
+                onClick={() => setSecurityLogs((prev) => [...prev, "[SEC-AUDIT-" + (100 + prev.length) + "] Port scanning initiated... [SIMULATED CLEAN] 0 vulnerabilities found."])}
                 className="mt-4 w-full bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl transition"
               >
-                Scan Compliance State
+                Scan Compliance State (Simulated)
               </button>
             </div>
           )}
@@ -431,7 +431,7 @@ export default function ChatPanel() {
 
                 {diagFile && (
                   <div className="bg-[#02050c] border border-[#1a2e4a] rounded-xl p-4 font-mono text-[11px] text-cyan-400 whitespace-pre-wrap leading-relaxed">
-                    <div className="font-bold text-slate-400 border-b border-[#1a2e4a] pb-1.5 mb-2">Diagnostic Output: {diagFile}</div>
+                    <div className="font-bold text-slate-400 border-b border-[#1a2e4a] pb-1.5 mb-2">Diagnostic Output (Simulated): {diagFile}</div>
                     {diagResult}
                   </div>
                 )}
@@ -452,20 +452,20 @@ export default function ChatPanel() {
       <aside className="w-72 h-full bg-[#050b18] border-l border-[#1a2e4a] p-5 flex flex-col justify-between flex-shrink-0 overflow-y-auto">
         <div className="space-y-6">
           <div className="flex justify-between items-center border-b border-[#1a2e4a] pb-3">
-            <h3 className="text-xs uppercase font-mono tracking-wider font-bold text-slate-300">INFRASTRUCTURE HEALTH</h3>
-            <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-mono">Live</span>
+            <h3 className="text-xs uppercase font-mono tracking-wider font-bold text-slate-300">SIMULATED HEALTH</h3>
+            <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-mono">Active</span>
           </div>
 
           {/* Metric dial 1 */}
           <div className="bg-[#02050c] border border-[#1a2e4a] p-4 rounded-xl space-y-3">
             <div className="flex justify-between items-center text-[10px] font-mono tracking-widest uppercase">
-              <span className="text-slate-400">CPU UTILIZATION</span>
+              <span className="text-slate-400">SIMULATED CPU</span>
               <span className="text-emerald-400">⬇️ Active</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-black font-mono">{liveCPU}% <span className="text-[9px] text-slate-500 block font-normal tracking-normal">Avg. Usage</span></div>
+              <div className="text-2xl font-black font-mono">{liveCPU}% <span className="text-[9px] text-slate-500 block font-normal tracking-normal">Simulated Usage</span></div>
               <div className="w-16 h-8 bg-slate-900/60 border border-[#1a2e4a] rounded flex items-center justify-center text-[10px] text-indigo-400">
-                ⚡ live
+                ⚡ active
               </div>
             </div>
           </div>
@@ -473,13 +473,13 @@ export default function ChatPanel() {
           {/* Metric dial 2 */}
           <div className="bg-[#02050c] border border-[#1a2e4a] p-4 rounded-xl space-y-3">
             <div className="flex justify-between items-center text-[10px] font-mono tracking-widest uppercase">
-              <span className="text-slate-400">MEMORY UTILIZATION</span>
+              <span className="text-slate-400">SIMULATED MEMORY</span>
               <span className="text-indigo-400">⬆️ Active</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-black font-mono">{liveMemory}% <span className="text-[9px] text-slate-500 block font-normal tracking-normal">Avg. Usage</span></div>
+              <div className="text-2xl font-black font-mono">{liveMemory}% <span className="text-[9px] text-slate-500 block font-normal tracking-normal">Simulated Usage</span></div>
               <div className="w-16 h-8 bg-slate-900/60 border border-[#1a2e4a] rounded flex items-center justify-center text-[10px] text-indigo-400">
-                ⚡ live
+                ⚡ active
               </div>
             </div>
           </div>
@@ -487,7 +487,7 @@ export default function ChatPanel() {
           {/* Metric dial 3 */}
           <div className="bg-[#02050c] border border-[#1a2e4a] p-4 rounded-xl space-y-3">
             <div className="flex justify-between items-center text-[10px] font-mono tracking-widest uppercase">
-              <span className="text-slate-400">NETWORK I/O</span>
+              <span className="text-slate-400">SIMULATED NETWORK I/O</span>
               <span className="text-cyan-400">Active</span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
@@ -505,7 +505,7 @@ export default function ChatPanel() {
           {/* Services List by Error Rate */}
           <div className="space-y-3">
             <div className="flex justify-between items-center text-[10px] font-mono tracking-widest uppercase">
-              <span className="text-slate-400">TOP SERVICES BY ERROR RATE</span>
+              <span className="text-slate-400">SIMULATED ERROR RATE</span>
               <a href="#" className="text-cyan-400 font-bold hover:underline text-[9px]">View all</a>
             </div>
             <div className="space-y-2 text-xs font-mono">

@@ -1,4 +1,4 @@
-﻿name: OpsPilot Enterprise CI Pipeline
+﻿name: OpsPilot CI
 
 on:
   push:
@@ -17,14 +17,20 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-cache: 'npm'
+        cache: 'npm'
         node-version: 22
 
     - name: Install Project Dependencies
       run: npm ci
 
-    - name: Lint & Static Type Verification
-      run: npm run lint --if-present
+    - name: Run Linter
+      run: npm run lint
+
+    - name: Run Type-Check
+      run: npm run typecheck --if-present
+
+    - name: Run Dependency Audit
+      run: npm audit --omit=dev --audit-level=high
 
     - name: Production Ready Build
       run: npm run build
