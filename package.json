@@ -9,7 +9,7 @@
     "url": "https://github.com/sarusarvesh993-cyber/opspilot-v2.git"
   },
   "engines": {
-    "node": ">=22.18.0",
+    "node": "22.x",
     "npm": ">=10"
   },
   "scripts": {
