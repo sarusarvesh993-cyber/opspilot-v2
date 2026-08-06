@@ -1,12 +1,24 @@
-﻿version: "3.8"
 services:
   opspilot:
     build:
       context: .
       dockerfile: Dockerfile
+    init: true
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
-      - OPENAI_API_KEY=\
-      - OPENAI_MODEL=gpt-4o
-    restart: always
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENAI_BASE_URL: "${OPENAI_BASE_URL:-}"
+      OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4o-mini}"
+      OPENAI_MAX_OUTPUT_TOKENS: "${OPENAI_MAX_OUTPUT_TOKENS:-900}"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3

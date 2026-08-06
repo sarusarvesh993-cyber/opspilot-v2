@@ -1,25 +1,21 @@
-import type { Metadata } from "next";
-import { Inter, Sora, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-sora",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
-
 export const metadata: Metadata = {
-  title: "OpsPilot",
-  description: "Premium multi-agent orchestration studio",
+  metadataBase: new URL("https://opspilot-v2.vercel.app"),
+  title: "OpsPilot v2 | AI DevSecOps Copilot Demo",
+  description:
+    "A portfolio demonstration of a secure AI chat endpoint and simulated DevSecOps operations dashboard.",
+  openGraph: {
+    title: "OpsPilot v2",
+    description: "AI DevSecOps copilot and operations dashboard demonstration.",
+    type: "website",
+  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#030712",
 };
 
 export default function RootLayout({
@@ -29,11 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${sora.variable} ${jetbrainsMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

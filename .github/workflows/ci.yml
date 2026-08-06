@@ -1,28 +1,56 @@
-﻿name: OpsPilot CI
+name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main]
   pull_request:
-    branches: [ main, master ]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  quality:
+    name: Quality and build
     runs-on: ubuntu-latest
+    timeout-minutes: 12
 
     steps:
-    - name: Checkout Codebase
-      uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-    - name: Install Project Dependencies
-      run: npm install --legacy-peer-deps
+      - name: Install locked dependencies
+        run: npm ci
 
-    - name: Production Ready Build
-      run: npx next build
-      env:
-        OPENAI_API_KEY: "mock-key-for-ci"
+      - name: Lint, type-check, and test
+        run: npm run check
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Build production application
+        run: npm run build
+
+  container:
+    name: Container build
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build standalone image
+        run: docker build --tag opspilot-v2:ci .
