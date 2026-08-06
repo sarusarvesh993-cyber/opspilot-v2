@@ -84,7 +84,7 @@ The client handles non-2xx responses and displays a recoverable alert rather tha
 
 ## Deployment
 
-`next.config.ts` enables standalone output. The multi-stage Docker build installs from `package-lock.json`, compiles in a builder stage, and copies only the traced runtime into a Node 22 Alpine image. The process runs as the unprivileged `nextjs` user and includes a health check.
+`next.config.ts` uses Vercel's native trace layout on Vercel and enables standalone output elsewhere. The multi-stage Docker build installs from `package-lock.json`, compiles in a builder stage, and copies only the standalone runtime into a Node 22 Alpine image. The process runs as the unprivileged `nextjs` user and includes a health check.
 
 GitHub Actions executes linting, strict type checking, unit tests, a high-severity production dependency audit, a production build, and a standalone container build.
 

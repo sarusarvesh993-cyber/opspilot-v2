@@ -10,6 +10,15 @@ updates:
         dependency-type: production
       development-dependencies:
         dependency-type: development
+    # Keep runtime/tooling majors aligned with the supported Node and Next.js
+    # versions; review these breaking upgrades manually instead of grouping them.
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 5
 
   - package-ecosystem: github-actions

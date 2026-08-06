@@ -13,7 +13,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Vercel's adapter requires the native .next trace layout. Docker builds run
+  // outside Vercel and still receive the minimal standalone server bundle.
+  ...(process.env.VERCEL === "1" ? {} : { output: "standalone" as const }),
   poweredByHeader: false,
   reactStrictMode: true,
   async headers() {
